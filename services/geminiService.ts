@@ -20,36 +20,17 @@ export const analyzeBikeMaintenance = async (data: MaintenanceFormData): Promise
     model: "gemini-3-flash-preview",
     contents: prompt,
     config: {
-      systemInstruction: "You are an expert motorcycle mechanic. Analyze bike data and provide structured maintenance advice. Be precise about potential failures based on common model issues and mileage. Return valid JSON only.",
+      systemInstruction: "You are an expert motorcycle mechanic named Gearhead. Analyze bike data and provide technical maintenance advice. Return valid JSON only with properties: riskLevel, estimatedCostRange, nextServiceRecommendation, healthScore (0-100), preventiveTips (array), and summary.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
         properties: {
-          riskLevel: {
-            type: Type.STRING,
-            description: "Maintenance risk level: Low, Medium, or High",
-          },
-          estimatedCostRange: {
-            type: Type.STRING,
-            description: "Estimated cost range in INR, e.g., '₹1,500 - ₹3,000'",
-          },
-          nextServiceRecommendation: {
-            type: Type.STRING,
-            description: "When and what should be serviced next",
-          },
-          healthScore: {
-            type: Type.NUMBER,
-            description: "A score out of 100 representing the overall condition",
-          },
-          preventiveTips: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "A list of actionable tips to maintain bike health",
-          },
-          summary: {
-            type: Type.STRING,
-            description: "A brief technical summary of the findings",
-          },
+          riskLevel: { type: Type.STRING },
+          estimatedCostRange: { type: Type.STRING },
+          nextServiceRecommendation: { type: Type.STRING },
+          healthScore: { type: Type.NUMBER },
+          preventiveTips: { type: Type.ARRAY, items: { type: Type.STRING } },
+          summary: { type: Type.STRING },
         },
         required: ["riskLevel", "estimatedCostRange", "nextServiceRecommendation", "healthScore", "preventiveTips", "summary"],
       },

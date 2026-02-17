@@ -26,68 +26,84 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ result }) => {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-700">
-      <div className="bg-slate-900/40 border border-white/10 backdrop-blur-md rounded-[2rem] overflow-hidden shadow-2xl">
-        {/* Header Dashboard Area */}
-        <div className="p-8 border-b border-white/5 flex flex-wrap gap-8 items-center justify-between bg-gradient-to-br from-white/[0.02] to-transparent">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-black text-white flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-sm">2</span>
-              Analysis Results
-            </h2>
-            <div className="flex items-center gap-3">
-              <span className={`px-4 py-1.5 rounded-full text-xs font-black border uppercase tracking-widest ${styles.bg} ${styles.color} ${styles.border} ${styles.glow}`}>
-                {result.riskLevel} Risk
-              </span>
-              <span className="text-slate-600 text-xs font-bold uppercase tracking-widest">Diagnostic Complete</span>
+      <div className="bg-slate-900/40 border border-white/10 backdrop-blur-md rounded-[2.5rem] overflow-hidden shadow-2xl">
+        {/* Diagnostic Dashboard Header */}
+        <div className="p-10 border-b border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-10">
+            <div className="space-y-4 text-center lg:text-left">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <div className="px-4 py-1 bg-blue-500 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full">Report Generated</div>
+                <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Diagnostic ID: {Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+              </div>
+              <h2 className="text-4xl font-black text-white tracking-tight">Analysis Results</h2>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                <div className={`px-5 py-2 rounded-2xl text-xs font-black border uppercase tracking-widest ${styles.bg} ${styles.color} ${styles.border} ${styles.glow}`}>
+                  {result.riskLevel} Risk Level
+                </div>
+                <div className="px-5 py-2 bg-slate-800/50 border border-white/5 rounded-2xl text-xs font-black text-slate-300 uppercase tracking-widest">
+                  Est. Cost: {result.estimatedCostRange}
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div className="flex gap-10">
-            <div className="text-center">
-               <div className={`text-5xl font-black tracking-tighter ${getHealthColor(result.healthScore)}`}>
-                 {result.healthScore}<span className="text-lg font-bold text-slate-500">/100</span>
+
+            {/* Health Score Circular Visualization */}
+            <div className="relative w-40 h-40 group">
+               <svg className="w-full h-full transform -rotate-90">
+                 <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-800" />
+                 <circle 
+                   cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="12" fill="transparent" 
+                   strokeDasharray={440} 
+                   strokeDashoffset={440 - (440 * result.healthScore) / 100} 
+                   className={`${getHealthColor(result.healthScore)} transition-all duration-1000 ease-out`}
+                   strokeLinecap="round"
+                 />
+               </svg>
+               <div className="absolute inset-0 flex flex-col items-center justify-center">
+                 <span className={`text-4xl font-black tracking-tighter ${getHealthColor(result.healthScore)}`}>{result.healthScore}</span>
+                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Health</span>
                </div>
-               <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-1">Health Score</div>
-               <div className="mt-2 w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden mx-auto">
-                 <div className={`h-full rounded-full transition-all duration-1000 ${getHealthColor(result.healthScore).replace('text-', 'bg-')}`} style={{ width: `${result.healthScore}%` }}></div>
-               </div>
+               <div className="absolute -inset-4 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors"></div>
             </div>
           </div>
         </div>
 
-        <div className="p-8 space-y-10">
-          {/* Main Summary */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="space-y-4">
-               <div className="flex items-center gap-2">
+        {/* Content Modules */}
+        <div className="p-10 space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Notes Section */}
+            <div className="space-y-6">
+               <div className="flex items-center gap-3">
                  <div className="w-1.5 h-6 bg-blue-500 rounded-full"></div>
-                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Mechanic's Notes</h3>
+                 <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em]">AI Mechanic Assessment</h3>
                </div>
-               <div className="bg-slate-950/40 p-6 rounded-3xl border border-white/5 relative">
-                 <div className="absolute top-4 left-4 text-blue-500/20">
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8v8H6v-8h4zm16 0v8h-4v-8h4zm-16 10v6H6v-6h4zm16 0v6h-4v-6h4z" opacity=".2"/></svg>
+               <div className="relative">
+                 <div className="absolute -top-4 -left-4 text-blue-500/10 scale-150">
+                    <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8v8H6v-8h4zm16 0v8h-4v-8h4zm-16 10v6H6v-6h4zm16 0v6h-4v-6h4z" /></svg>
                  </div>
-                 <p className="text-slate-300 text-lg font-medium leading-relaxed italic relative z-10">
-                   "{result.summary}"
-                 </p>
+                 <div className="bg-slate-950/40 p-8 rounded-[2rem] border border-white/5 backdrop-blur-sm">
+                   <p className="text-slate-300 text-lg font-medium leading-relaxed italic relative z-10">
+                     "{result.summary}"
+                   </p>
+                 </div>
                </div>
             </div>
 
-            <div className="space-y-4">
-               <div className="flex items-center gap-2">
+            {/* Action Section */}
+            <div className="space-y-6">
+               <div className="flex items-center gap-3">
                  <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
-                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Recommended Action</h3>
+                 <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.3em]">Mandatory Service Path</h3>
                </div>
-               <div className="bg-amber-500/5 p-6 rounded-3xl border border-amber-500/20 group hover:border-amber-500/40 transition-colors">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-amber-500/10 rounded-2xl text-amber-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <div className="bg-amber-500/5 p-8 rounded-[2rem] border border-amber-500/20 group hover:border-amber-500/40 transition-all duration-500">
+                  <div className="flex items-start gap-6">
+                    <div className="p-4 bg-amber-500/10 rounded-2xl text-amber-500 shadow-lg shadow-amber-950/50">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-black text-white text-sm uppercase tracking-wider mb-2">Next Service</h4>
-                      <p className="text-amber-200/80 leading-relaxed font-medium">
+                      <h4 className="font-black text-white text-sm uppercase tracking-wider mb-2">Next Step Recommendation</h4>
+                      <p className="text-amber-200/80 leading-relaxed font-semibold text-lg">
                         {result.nextServiceRecommendation}
                       </p>
                     </div>
@@ -96,26 +112,25 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ result }) => {
             </div>
           </div>
 
-          {/* Secondary Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-white/5">
-             <div className="space-y-4">
-               <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Estimated Service Cost</h3>
-               <div className="text-4xl font-black text-white tracking-tight">
-                 {result.estimatedCostRange}
-               </div>
-               <p className="text-xs text-slate-500 font-medium">Based on current market estimates for {result.riskLevel} risk levels.</p>
-             </div>
-
-             <div className="space-y-4">
-               <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Maintenance Checklist</h3>
-               <div className="space-y-2">
-                 {result.preventiveTips.map((tip, idx) => (
-                   <div key={idx} className="flex items-center gap-3 p-3 bg-white/[0.02] rounded-xl border border-white/5 text-sm text-slate-300 font-medium">
-                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"></div>
-                     {tip}
+          {/* Checklist Footer */}
+          <div className="pt-10 border-t border-white/5">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                   <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Checklist / Tips</h3>
+                   <div className="grid grid-cols-1 gap-3">
+                     {result.preventiveTips.map((tip, idx) => (
+                       <div key={idx} className="flex items-center gap-4 p-4 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-blue-500/30 transition-colors">
+                         <div className="w-2 h-2 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"></div>
+                         <span className="text-slate-300 font-medium text-sm">{tip}</span>
+                       </div>
+                     ))}
                    </div>
-                 ))}
-               </div>
+                </div>
+                <div className="bg-slate-800/20 rounded-[2rem] p-8 flex flex-col justify-center items-center text-center border border-white/5">
+                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4">Risk Evaluation</p>
+                   <div className={`text-6xl font-black ${styles.color} tracking-tighter mb-2`}>{result.riskLevel}</div>
+                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest italic">Maintain Immediate Caution</p>
+                </div>
              </div>
           </div>
         </div>
