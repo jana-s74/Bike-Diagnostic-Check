@@ -1,0 +1,7 @@
+{
+  "name": "Bike Diagnostic Check",
+  "description": "An AI-powered motorcycle maintenance tool that analyzes bike symptoms, mileage, and riding patterns to provide health scores, risk assessments, and cost estimations.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
